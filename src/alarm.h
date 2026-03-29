@@ -7,7 +7,7 @@ struct Alarm : Button
     bool isRinging;
     Button alarmToggle;
 
-    Button hour;
+    Button hour_;
     Button minuteOnes;
     Button minuteTens;
     Button AMPM;

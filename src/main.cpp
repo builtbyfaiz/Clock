@@ -19,10 +19,10 @@ constexpr int STATETEXT_FONTSIZE = 50;
 
 void posText(DisplayedText &topText, DisplayedText &topLeftText,
              DisplayedText &topRightText, DisplayedText &stateText,
-             DisplayedText &timeText, Buttons &buttons)
+             DisplayedText &timeText, Buttons &buttons_)
 {
     // 1. Position independent elements first
-    for (auto &button : buttons)
+    for (auto &button : buttons_)
     {
         button.centerTitleRelative();
     }

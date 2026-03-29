@@ -1,5 +1,5 @@
 #include <string>
 #include "globalConst.h"
 
-const char *states[] = {"TIME", "STOPWATCH", "ALARM"};
-std::string currentState = states[2];
+const char *gStates[] = {"TIME", "STOPWATCH", "ALARM"};
+std::string currentState = gStates[0];

@@ -51,7 +51,7 @@ void initNavButtons(Button &defaultButton)
     for (size_t i = 0; i < TOTALNAVBUTTONS; i++)
     {
         buttons.push_back(defaultButton);
-        buttons[i].title.text = states[i];
+        buttons[i].title.text = gStates[i];
         buttons[i].rect.x = PADDING + i * (defaultButton.rect.width + spacing);
         buttons[i].title.fontSize = buttons[i].rect.width / 7;
         buttons[i].title.color = BLACK;
@@ -96,7 +96,7 @@ void updateActiveButtonColor()
 {
     for (size_t i = 0; i < TOTALNAVBUTTONS; i++)
     {
-        if (strcmp(currentState.c_str(), states[i]) == 0)
+        if (strcmp(currentState.c_str(), gStates[i]) == 0)
         {
             for (size_t j = 0; j < TOTALNAVBUTTONS; j++)
             {
