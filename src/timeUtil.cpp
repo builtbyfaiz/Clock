@@ -31,7 +31,7 @@ void setUpperText(DisplayedText &topLeftText, DisplayedText &topText, DisplayedT
     {
         topLeftText.text = "Clock By Faiz";
         topText.text = "<WELCOME>";
-        topRightText.text = "V1.0";
+        topRightText.text = "V1.1";
     }
     if (currentState == "STOPWATCH")
     {
@@ -42,7 +42,7 @@ void setUpperText(DisplayedText &topLeftText, DisplayedText &topText, DisplayedT
     if (currentState == "ALARM")
     {
         topLeftText.text = "---";
-        topText.text = "NOT IMPLEMENTED";
+        topText.text = "Basic Alarm";
         topRightText.text = "---";
     }
 }

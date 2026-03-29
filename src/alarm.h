@@ -31,5 +31,4 @@ struct Alarm : Button
     int getCurrentTimeInMinutes();
 
     void handleRing();
-
 };

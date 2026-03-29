@@ -1,9 +1,10 @@
 #include "alarm.h"
 #include "button.h"
 #include "globalConst.h"
-#include <iostream>
 #include <chrono>
+#include <iostream>
 #include <sstream>
+
 Alarm::Alarm()
 {
     isOn = false;
@@ -36,7 +37,8 @@ std::vector<Button *> Alarm::initTimeButtons()
     // Set default texts for hour, minute tens, minute ones, AM/PM, and Toggle.
     std::vector<std::string> timeParts = {"12", "0", "0", "AM", "OFF"};
     // Note: alarmToggle is included as the last element.
-    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes, &AMPM, &alarmToggle};
+    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes,
+                                         &AMPM, &alarmToggle};
 
     // Apply template and assign texts.
     for (size_t i = 0; i < timeButtons.size(); i++)
@@ -65,17 +67,20 @@ void Alarm::updateTimeButtonRects()
     float xOffset = rect.x + padding;
 
     // Update rect properties for each time button
-    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes, &AMPM};
+    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes,
+                                         &AMPM};
     for (size_t i = 0; i < timeButtons.size(); i++)
     {
         // Update the rect width based on text and padding
-        timeButtons[i]->rect.width = static_cast<float>(
-                                         MeasureText(timeButtons[i]->title.text.c_str(), timeButtons[i]->title.fontSize)) +
-                                     timeButtons[i]->padding_;
+        timeButtons[i]->rect.width =
+            static_cast<float>(MeasureText(timeButtons[i]->title.text.c_str(),
+                                           timeButtons[i]->title.fontSize)) +
+            timeButtons[i]->padding_;
 
         // Position button horizontally
         timeButtons[i]->rect.x = xOffset;
-        timeButtons[i]->rect.y = rect.y + (rect.height - timeButtons[i]->rect.height) / 2;
+        timeButtons[i]->rect.y =
+            rect.y + (rect.height - timeButtons[i]->rect.height) / 2;
 
         // Center the title
         timeButtons[i]->centerTitleRelative();
@@ -138,7 +143,8 @@ void Alarm::handleInput()
     {
         isOn = !isOn;
         alarmToggle.color = isOn ? DARKGREEN : RED;
-        alarmToggle.title.text = (alarmToggle.title.text == "OFF" ? "ON" : "OFF");
+        alarmToggle.title.text =
+            (alarmToggle.title.text == "OFF" ? "ON" : "OFF");
     }
     return;
 }
@@ -149,14 +155,17 @@ void Alarm::positionTimeElements()
     float xOffset = rect.x + padding;
 
     // Position time buttons (excluding alarmToggle for now).
-    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes, &AMPM};
+    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes,
+                                         &AMPM};
     for (size_t i = 0; i < timeButtons.size(); i++)
     {
         timeButtons[i]->rect.x = xOffset;
-        timeButtons[i]->rect.width = static_cast<float>(
-                                         MeasureText(timeButtons[i]->title.text.c_str(), timeButtons[i]->title.fontSize)) +
-                                     timeButtons[i]->padding_;
-        timeButtons[i]->rect.y = rect.y + (rect.height - timeButtons[i]->rect.height) / 2;
+        timeButtons[i]->rect.width =
+            static_cast<float>(MeasureText(timeButtons[i]->title.text.c_str(),
+                                           timeButtons[i]->title.fontSize)) +
+            timeButtons[i]->padding_;
+        timeButtons[i]->rect.y =
+            rect.y + (rect.height - timeButtons[i]->rect.height) / 2;
         timeButtons[i]->centerTitleRelative();
         timeButtons[i]->title.y = title.y;
         xOffset += timeButtons[i]->rect.width + padding;
@@ -169,7 +178,8 @@ void Alarm::positionTimeElements()
     semiColon.y = title.y;
 
     // Position the alarm toggle using its dedicated init functions.
-    alarmToggle.rect.x = rect.x + rect.width - (title.y - rect.y) - alarmToggle.rect.width;
+    alarmToggle.rect.x =
+        rect.x + rect.width - (title.y - rect.y) - alarmToggle.rect.width;
     alarmToggle.rect.y = title.y;
     alarmToggle.centerTitleRelative();
 
@@ -185,12 +195,14 @@ void Alarm::positionTimeElements()
 void Alarm::drawTimeElements()
 {
     // Draw the semicolon.
-    DrawTextEx(GetFontDefault(), semiColon.text.c_str(),
-               {static_cast<float>(semiColon.x), static_cast<float>(semiColon.y)},
-               semiColon.fontSize, 1, semiColon.color);
+    DrawTextEx(
+        GetFontDefault(), semiColon.text.c_str(),
+        {static_cast<float>(semiColon.x), static_cast<float>(semiColon.y)},
+        semiColon.fontSize, 1, semiColon.color);
 
     // Draw all time buttons including the alarm toggle.
-    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes, &AMPM, &alarmToggle};
+    std::vector<Button *> timeButtons = {&hour_, &minuteTens, &minuteOnes,
+                                         &AMPM, &alarmToggle};
     for (auto btn : timeButtons)
     {
         btn->draw(); // Assumes Button::draw() renders its own rectangle & text.
@@ -201,7 +213,8 @@ void Alarm::initAlarmToggle()
 {
     alarmToggle.rect.height = title.fontSize - 10;
     alarmToggle.rect.width = alarmToggle.rect.height + 10;
-    alarmToggle.rect.x = rect.x + rect.width - (title.y - rect.y) - alarmToggle.rect.width;
+    alarmToggle.rect.x =
+        rect.x + rect.width - (title.y - rect.y) - alarmToggle.rect.width;
     alarmToggle.rect.y = title.y;
     alarmToggle.color = RED;
 
@@ -237,19 +250,22 @@ int Alarm::getAlarmTimeInMinutes(const std::string &timeString)
 
 void Alarm::handleRing()
 {
-    std::string timeString = hour_.title.text + ":" + minuteTens.title.text + minuteOnes.title.text + " " + AMPM.title.text;
+    std::string timeString = hour_.title.text + ":" + minuteTens.title.text +
+                             minuteOnes.title.text + " " + AMPM.title.text;
 
     int alarmMinutes = getAlarmTimeInMinutes(timeString);
     int currentMinutes = getCurrentTimeInMinutes();
-
+    
+    UpdateMusicStream(alarmRingtone);
     if (alarmMinutes == currentMinutes && isOn)
     {
-        if (IsMusicStreamPlaying(alarmRingtone))
-            return;
-
-        PlayMusicStream(alarmRingtone);   
+        if (!IsMusicStreamPlaying(alarmRingtone))
+        {
+            PlayMusicStream(alarmRingtone);
+            std::cout << "Alarm is Ringing";
+        }
     }
-    StopMusicStream(alarmRingtone);
+    // StopMusicStream(alarmRingtone);
 }
 int Alarm::getCurrentTimeInMinutes()
 {

@@ -47,7 +47,8 @@ void drawUpperText(DisplayedText &topLeftText, DisplayedText &topText,
 
 int main()
 {
-    SearchAndSetResourceDir("resources");
+    SearchAndSetResourceDir("assets");
+    
     // Init Window
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 600, "Clock");
