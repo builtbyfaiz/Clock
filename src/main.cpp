@@ -1,14 +1,15 @@
-#include <raylib.h>
-#include <iostream>
-#include <chrono>
-#include <vector>
-#include "time.h"
+#include "main.h"
+#include "alarm.h"
 #include "button.h"
+#include "globalConst.h"
 #include "stopWatch.h"
 #include "text.h"
-#include "main.h"
-#include "globalConst.h"
-#include "alarm.h"
+#include "time.h"
+#include <chrono>
+#include <iostream>
+#include <raylib.h>
+#include <vector>
+
 
 using namespace std;
 using namespace chrono;
@@ -25,16 +26,16 @@ int main()
 
     // Init Audio and Alarm Sound
     InitAudioDevice();
-    
 
     // Init Buttons
     Button sampleButton;
     initNavButtons(sampleButton);
 
-    DisplayedText topLeftText, topText, topRightText, timeText, stateText, alarmText; // Declare all Text
-    timeText.text = getFormattedTime();                                               // Init Time Text
-    stateText.text = currentState;                                                    // Init State Text
-    setUpperText(topLeftText, topText, topRightText);                                 // Init Upper Text
+    DisplayedText topLeftText, topText, topRightText, timeText, stateText,
+        alarmText;                                    // Declare all Text
+    timeText.text = getFormattedTime();               // Init Time Text
+    stateText.text = currentState;                    // Init State Text
+    setUpperText(topLeftText, topText, topRightText); // Init Upper Text
 
     // Init StopWatch
     Stopwatch stopwatch;
@@ -44,7 +45,8 @@ int main()
     stateText.color = RED;
 
     // Init Font Sizes
-    topLeftText.fontSize = topText.fontSize = topRightText.fontSize = UPPERTEXT_FONTSIZE;
+    topLeftText.fontSize = topText.fontSize = topRightText.fontSize =
+        UPPERTEXT_FONTSIZE;
     stateText.fontSize = STATETEXT_FONTSIZE;
 
     posText(topText, topLeftText, topRightText, stateText, timeText, buttons);
@@ -62,7 +64,8 @@ int main()
         {
             stateText.text = currentState;
             setUpperText(topLeftText, topText, topRightText);
-            posText(topText, topLeftText, topRightText, stateText, timeText, buttons);
+            posText(topText, topLeftText, topRightText, stateText, timeText,
+                    buttons);
             stopwatch.stopWatchText.posText(CENTER_TEXT_RELATIVE);
             alarm.positionTimeElements();
         }
@@ -102,7 +105,9 @@ int main()
     return 0;
 }
 
-void posText(DisplayedText &topText, DisplayedText &topLeftText, DisplayedText &topRightText, DisplayedText &stateText, DisplayedText &timeText, Buttons &buttons)
+void posText(DisplayedText &topText, DisplayedText &topLeftText,
+             DisplayedText &topRightText, DisplayedText &stateText,
+             DisplayedText &timeText, Buttons &buttons)
 {
     // 1. Position independent elements first
     for (auto &button : buttons)
@@ -120,7 +125,8 @@ void posText(DisplayedText &topText, DisplayedText &topLeftText, DisplayedText &
     stateText.posText(STATE_TEXT_RELATIVE);
 }
 
-void drawUpperText(DisplayedText &topLeftText, DisplayedText &topText, DisplayedText &topRightText)
+void drawUpperText(DisplayedText &topLeftText, DisplayedText &topText,
+                   DisplayedText &topRightText)
 {
     topLeftText.draw();
     topText.draw();
