@@ -1,15 +1,28 @@
 #include <ctime>  // For time handling
-#include "time.h" // For the declaration of getFormattedTime()
+#include "timeUtil.h" // For the declaration of getFormattedTime()
 #include "text.h"
 #include "globalConst.h"
+#include <iostream>
+#include <array>
+#include <string>
 
-char *getFormattedTime()
+std::string getFormattedTime()
 {
-    static char timeBuffer[100];
-    time_t currentTime = std::time(nullptr);
-    tm *time = std::localtime(&currentTime);
-    std::strftime(timeBuffer, 100, "%r", time);
-    return timeBuffer;
+    std::array<char, 100> buffer{};
+
+    std::time_t now = std::time(nullptr);
+    std::tm timeinfo{};
+
+#if defined(_WIN32) || defined(_WIN64)
+    if (localtime_s(&timeinfo, &now) != 0) return "";
+#else
+    if (localtime_r(&now, &timeinfo) == nullptr) return "";
+#endif
+
+    if (std::strftime(buffer.data(), buffer.size(), "%I:%M:%S %p", &timeinfo) == 0)
+        return "";
+
+    return std::string(buffer.data());
 }
 
 void setUpperText(DisplayedText &topLeftText, DisplayedText &topText, DisplayedText &topRightText)

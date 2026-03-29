@@ -2,14 +2,14 @@
 #include "alarm.h"
 #include "button.h"
 #include "globalConst.h"
+#include "resource_dir.h"
 #include "stopWatch.h"
 #include "text.h"
-#include "time.h"
+#include "timeUtil.h"
 #include <chrono>
 #include <iostream>
 #include <raylib.h>
 #include <vector>
-
 
 using namespace std;
 using namespace chrono;
@@ -17,8 +17,37 @@ using namespace chrono;
 constexpr int UPPERTEXT_FONTSIZE = 32; // topleft, top and topright
 constexpr int STATETEXT_FONTSIZE = 50;
 
+void posText(DisplayedText &topText, DisplayedText &topLeftText,
+             DisplayedText &topRightText, DisplayedText &stateText,
+             DisplayedText &timeText, Buttons &buttons)
+{
+    // 1. Position independent elements first
+    for (auto &button : buttons)
+    {
+        button.centerTitleRelative();
+    }
+    topText.posText(TOP);           // Top-centered
+    topLeftText.posText(TOPLEFT);   // Top-left corner
+    topRightText.posText(TOPRIGHT); // Top-right corner
+
+    // 2. Position elements relative to the above
+    timeText.posText(CENTER_TEXT_RELATIVE);
+
+    // 3. Finally, position elements with the most dependencies
+    stateText.posText(STATE_TEXT_RELATIVE);
+}
+
+void drawUpperText(DisplayedText &topLeftText, DisplayedText &topText,
+                   DisplayedText &topRightText)
+{
+    topLeftText.draw();
+    topText.draw();
+    topRightText.draw();
+}
+
 int main()
 {
+    SearchAndSetResourceDir("resources");
     // Init Window
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 600, "Clock");
@@ -81,6 +110,8 @@ int main()
             timeText.text = getFormattedTime();
             timeText.draw();
         }
+        {
+        }
         if (currentState == "STOPWATCH")
         {
             stopwatch.handleInput();
@@ -103,32 +134,4 @@ int main()
     CloseAudioDevice();
     CloseWindow();
     return 0;
-}
-
-void posText(DisplayedText &topText, DisplayedText &topLeftText,
-             DisplayedText &topRightText, DisplayedText &stateText,
-             DisplayedText &timeText, Buttons &buttons)
-{
-    // 1. Position independent elements first
-    for (auto &button : buttons)
-    {
-        button.centerTitleRelative();
-    }
-    topText.posText(TOP);           // Top-centered
-    topLeftText.posText(TOPLEFT);   // Top-left corner
-    topRightText.posText(TOPRIGHT); // Top-right corner
-
-    // 2. Position elements relative to the above
-    timeText.posText(CENTER_TEXT_RELATIVE);
-
-    // 3. Finally, position elements with the most dependencies
-    stateText.posText(STATE_TEXT_RELATIVE);
-}
-
-void drawUpperText(DisplayedText &topLeftText, DisplayedText &topText,
-                   DisplayedText &topRightText)
-{
-    topLeftText.draw();
-    topText.draw();
-    topRightText.draw();
 }
