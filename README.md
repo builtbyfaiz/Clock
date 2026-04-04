@@ -1,8 +1,8 @@
-# Ludo-Cpp-Raylib
-
+# Clock-Raylib
 A test project, basic alarm clock.
 Built with C++ and Raylib 5.5
 Features include clock, stopwatch, and alarm.
+
 ## Status
 In development, not feature complete.
 
