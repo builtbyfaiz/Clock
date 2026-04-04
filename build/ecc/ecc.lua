@@ -75,7 +75,14 @@
 		args = table.join(args, toolset.getcppflags(cfg)) -- Preprocessor
 		args = table.join(args, toolset.getdefines(cfg.defines))
 		args = table.join(args, toolset.getundefines(cfg.undefines))
-		args = table.join(args, toolset.getincludedirs(cfg, cfg.includedirs, cfg.sysincludedirs))
+		args = table.join(args, toolset.getincludedirs(cfg,
+    		cfg.includedirs or {},
+   			cfg.sysincludedirs or {}
+		))
+		for _, dir in ipairs(cfg.externalincludedirs or {}) do
+    		table.insert(args, "-isystem")
+    		table.insert(args, dir)
+		end
 		if project.iscpp(prj) then
 			args = table.join(args, toolset.getcxxflags(cfg))
 		else

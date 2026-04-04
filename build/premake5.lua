@@ -1,6 +1,15 @@
 -- Export Compile Commands module for clangd support
 require "ecc/ecc"
 
+-- To update: bump both together, raylib-cpp must match raylib version
+raylib_version    = "5.5"
+raylibcpp_version = "5.5.1"
+raylib_dir        = "external/raylib-" .. raylib_version
+raylibcpp_dir     = "external/raylib-cpp-" .. raylibcpp_version
+
+-- if you don't want to download raylib, then set this to false, and set the raylib dir to where you want raylib to be pulled from, must be full sources.
+downloadRaylib = true
+
 newoption
 {
     trigger = "graphics",
@@ -15,7 +24,7 @@ newoption
         { "openges3", "OpenGL ES3"},
         { "software", "OpenGL 1.1 Software Render"}
     },
-    default = "opengl21"
+    default = "opengl33"
 }
 
 newoption
@@ -50,36 +59,41 @@ function download_progress(total, current)
     print("Download progress (" .. percent .. "%/100%)")
 end
 
+
 function check_raylib()
     os.chdir("external")
-    if(os.isdir("raylib-5.5") == false) then
-        if(not os.isfile("raylib-5.5.zip")) then
+    if(os.isdir("raylib-" .. raylib_version) == false) then
+        if(not os.isfile("raylib-" .. raylib_version .. ".zip")) then
             print("Raylib not found, downloading from github")
-            local result_str, response_code = http.download("https://github.com/raysan5/raylib/archive/refs/tags/5.5.zip", "raylib-5.5.zip", {
+            local result_str, response_code = http.download(
+                "https://github.com/raysan5/raylib/archive/refs/tags/" .. raylib_version .. ".zip",
+                "raylib-" .. raylib_version .. ".zip", {
                 progress = download_progress,
                 headers = { "From: Premake", "Referer: Premake" }
             })
         end
-        print("Unzipping to " ..  os.getcwd())
-        zip.extract("raylib-5.5.zip", os.getcwd())
-        os.remove("raylib-5.5.zip")
+        print("Unzipping to " .. os.getcwd())
+        zip.extract("raylib-" .. raylib_version .. ".zip", os.getcwd())
+        os.remove("raylib-" .. raylib_version .. ".zip")
     end
     os.chdir("../")
 end
 
 function check_raylibcpp()
     os.chdir("external")
-    if(os.isdir("raylib-cpp-5.5.1") == false) then
-        if(not os.isfile("raylib-cpp-5.5.1.zip")) then
+    if(os.isdir("raylib-cpp-" .. raylibcpp_version) == false) then
+        if(not os.isfile("raylib-cpp-" .. raylibcpp_version .. ".zip")) then
             print("Raylib-cpp not found, downloading from github")
-            http.download("https://github.com/RobLoach/raylib-cpp/archive/refs/tags/v5.5.1.zip", "raylib-cpp-5.5.1.zip", {
+            http.download(
+                "https://github.com/RobLoach/raylib-cpp/archive/refs/tags/v" .. raylibcpp_version .. ".zip",
+                "raylib-cpp-" .. raylibcpp_version .. ".zip", {
                 progress = download_progress,
                 headers = { "From: Premake", "Referer: Premake" }
             })
         end
         print("Unzipping raylib-cpp...")
-        zip.extract("raylib-cpp-5.5.1.zip", os.getcwd())
-        os.remove("raylib-cpp-5.5.1.zip")
+        zip.extract("raylib-cpp-" .. raylibcpp_version .. ".zip", os.getcwd())
+        os.remove("raylib-cpp-" .. raylibcpp_version .. ".zip")
     end
     os.chdir("../")
 end
@@ -132,10 +146,6 @@ function platform_defines()
 
     filter {}
 end
-
--- if you don't want to download raylib, then set this to false, and set the raylib dir to where you want raylib to be pulled from, must be full sources.
-downloadRaylib = true
-raylib_dir = "external/raylib-5.5"
 
 workspaceName = 'MyGame'
 baseName = path.getbasename(path.getdirectory(os.getcwd()));
@@ -231,7 +241,7 @@ if (downloadRaylib) then
         cppdialect "C++17"
 
         includedirs {raylib_dir .. "/src" }
-        externalincludedirs { "external/raylib-cpp-5.5.1/include" }
+        externalincludedirs { raylibcpp_dir .. "/include" }
 
         flags { "ShadowedVariables"}
         platform_defines()

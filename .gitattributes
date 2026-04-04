@@ -1,3 +1,0 @@
-build/** linguist-vendored
-*.lua linguist-vendored
-*.bat linguist-vendored
