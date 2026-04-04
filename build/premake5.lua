@@ -24,7 +24,7 @@ newoption
         { "openges3", "OpenGL ES3"},
         { "software", "OpenGL 1.1 Software Render"}
     },
-    default = "opengl33"
+    default = "opengl21"
 }
 
 newoption
